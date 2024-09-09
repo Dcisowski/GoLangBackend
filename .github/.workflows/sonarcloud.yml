@@ -1,0 +1,35 @@
+name: SonarCloud
+
+on:
+  push:
+    branches:
+      - main  
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  sonarcloud:
+    name: SonarCloud Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.23'
+
+      - name: Install dependencies
+        run: go mod tidy
+
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@v1.5
+        with:
+          args: >
+            -Dsonar.projectKey=your_project_key
+            -Dsonar.organization=your_organization_key
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

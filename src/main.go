@@ -43,7 +43,7 @@ func main() {
 func initDB() {
 	var err error
 
-	dsn := "host=localhost user=user password=password dbname=dbname port=5432 sslmode=disable TimeZone=Europe/Warsaw"
+	dsn := "host=localhost user=postgres password=Gigidek1@810082001 dbname=GoLang port=5432 sslmode=disable TimeZone=Europe/Warsaw"
 
 	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {

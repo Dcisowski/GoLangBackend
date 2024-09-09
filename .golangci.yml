@@ -1,0 +1,22 @@
+run:
+  timeout: 5m
+  tests: true
+
+linters:
+  disable-all: true
+  enable:
+    - errcheck  # Check for error handling
+    - govet     # Static analysis for vet
+    - ineffassign  # Detects ineffectual assignments
+    - gosec     # Checks for security issues
+    - staticcheck
+    - deadcode  # Finds dead code
+    - unused    # Checks for unused variables, constants, etc.
+    - typecheck # Type checks your code
+  fast: true
+
+issues:
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - errcheck
