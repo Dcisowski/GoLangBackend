@@ -6,9 +6,9 @@ WORKDIR /app
 
 # Copy go.mod and go.sum and download dependencies
 COPY /src .
-RUN go mod init example && go mod tidy
-
-RUN go build -o /app/myapp ./  # Ensure main.go is in src
+RUN go mod init example  \
+    && go mod tidy \
+    go build -o /app/myapp ./
 
 # Expose the port your app listens on
 EXPOSE 8080
