@@ -7,6 +7,8 @@ import (
 	"net/http"
 )
 
+const cartNotFound = "Cart not found"
+
 type Cart struct {
 	gorm.Model
 	Products []Product `gorm:"many2many:cart_products;"` // Many-to-many relationship between Cart and Product
@@ -52,7 +54,7 @@ func addToCart(c echo.Context) error {
 	} else {
 		// Try to find the existing cart by its ID
 		if err := db.First(&cart, cartID).Error; err != nil {
-			return c.JSON(http.StatusNotFound, "Cart not found")
+			return c.JSON(http.StatusNotFound, cartNotFound)
 		}
 	}
 
@@ -71,7 +73,7 @@ func getCart(c echo.Context) error {
 	var cart Cart
 	// Fetch cart with associated products
 	if err := db.Preload("Products").First(&cart, cartID).Error; err != nil {
-		return c.JSON(http.StatusNotFound, "Cart not found")
+		return c.JSON(http.StatusNotFound, cartNotFound)
 	}
 
 	// Calculate the total price
@@ -90,7 +92,7 @@ func updateCart(c echo.Context) error {
 	id := c.Param("id")
 	var cart Cart
 	if err := db.First(&cart, id).Error; err != nil {
-		return c.JSON(http.StatusNotFound, "Cart not found")
+		return c.JSON(http.StatusNotFound, cartNotFound)
 	}
 
 	if err := c.Bind(&cart); err != nil {

@@ -13,7 +13,7 @@ type Product struct {
 	Price       float64 `json:"price"`
 }
 
-func createProduct(c echo.Context) error {
+func CreateProduct(c echo.Context) error {
 	var product Product
 	if err := c.Bind(&product); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())

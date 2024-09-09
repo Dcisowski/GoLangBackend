@@ -1,8 +1,29 @@
 version: '3.8'
+
 services:
   golang-app:
     build:
       context: .
+    ports:
+      - "8080:8080"
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
     volumes:
-      - .:/app
-    command: ["golangci-lint", "run"]
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

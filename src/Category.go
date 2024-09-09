@@ -31,7 +31,7 @@ func getCategory(c echo.Context) error {
 	return c.JSON(http.StatusOK, category)
 }
 
-func ProductsByCategory(categoryID uint) func(db *gorm.DB) *gorm.DB {
+func productsByCategory(categoryID uint) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Joins("JOIN category_products ON category_products.product_id = products.id").
 			Where("category_products.category_id = ?", categoryID)
@@ -66,6 +66,6 @@ func getProductsByCategory(c echo.Context) error {
 	}
 
 	var products []Product
-	db.Scopes(ProductsByCategory(uint(categoryID))).Find(&products)
+	db.Scopes(productsByCategory(uint(categoryID))).Find(&products)
 	return c.JSON(http.StatusOK, products)
 }
