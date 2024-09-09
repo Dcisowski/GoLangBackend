@@ -12,16 +12,13 @@ import (
 var db *gorm.DB
 
 func main() {
-	// Initialize Echo instance
 	e := echo.New()
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"http://localhost:3000"},
 		AllowMethods: []string{echo.GET, echo.POST, echo.PUT, echo.DELETE},
 	}))
-	// Initialize database connection
 	initDB()
 
-	// Routes for Product CRUD
 	e.POST("/products", createProduct)
 	e.GET("/products", getAllProducts)
 	e.GET("/products/:id", getProduct)
@@ -37,6 +34,8 @@ func main() {
 	e.PUT("/categories/:id", updateCategory)
 	e.DELETE("/categories/:id", deleteCategory)
 	e.GET("/categories/:category_id/products", getProductsByCategory)
+	e.POST("/payments", createPayment)
+	e.GET("/payments/:id", getPayment)
 
 	e.Logger.Fatal(e.Start(":8080"))
 }
@@ -44,16 +43,13 @@ func main() {
 func initDB() {
 	var err error
 
-	// Define the DSN (Data Source Name) for PostgreSQL
 	dsn := "host=localhost user=user password=password dbname=dbname port=5432 sslmode=disable TimeZone=Europe/Warsaw"
 
-	// Open the connection using GORM and the PostgreSQL driver
 	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect to database")
 	}
 
-	// Auto-migrate your models
 	err = db.AutoMigrate(&Product{}, &Cart{}, &Category{})
 	if err != nil {
 		return
