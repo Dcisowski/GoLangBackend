@@ -8,7 +8,7 @@ WORKDIR /app
 COPY /src .
 RUN go mod init example  \
     && go mod tidy \
-    go build -o /app/myapp ./
+    && go build -o /app/myapp ./
 
 # Expose the port your app listens on
 EXPOSE 8080
