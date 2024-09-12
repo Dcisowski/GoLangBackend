@@ -25,6 +25,7 @@ func CreateProduct(c echo.Context) error {
 func getAllProducts(c echo.Context) error {
 	var products []Product
 	db.Find(&products)
+	println(products)
 	return c.JSON(http.StatusOK, products)
 }
 
